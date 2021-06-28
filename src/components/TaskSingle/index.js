@@ -24,6 +24,13 @@ function TaskSingle(props) {
 		}
 	};
 
+	const IsBeforeNow = (dateString) => {
+		if (dayjs(dateString).isBefore(dayjs(), 'day')) {
+			return true;
+		}
+		return false;
+	};
+
 	const onSubmit = async (values) => {
 		setIsShowErrorPickTimeBeforeNow(false);
 		console.log('values', values);
@@ -42,10 +49,16 @@ function TaskSingle(props) {
 			subscription={subscription}
 			initialValues={initialFormValue}
 			validate={(values) => {
+				console.log('values', values);
 				const errors = {};
 				if (!values.username) {
 					errors.username = 'Required';
 				}
+				if (IsBeforeNow(dayjs(values.dueTime))) {
+					console.log('111');
+					errors.dueTime = textError;
+				}
+				console.log('errors', errors);
 				return errors;
 			}}
 			render={({ handleSubmit, form, submitting, pristine, values }) => (
@@ -92,10 +105,13 @@ function TaskSingle(props) {
 												isErrorDate={handleErrorDate}
 												{...input}
 											/>
-											{!meta.active &&
+											{meta.error && meta.touched && (
+												<span>{meta.error}</span>
+											)}
+											{/* {!meta.active &&
 												IsShowErrorPickTimeBeforeNow && (
 													<span>{textError}</span>
-												)}
+												)} */}
 										</div>
 									);
 								}}

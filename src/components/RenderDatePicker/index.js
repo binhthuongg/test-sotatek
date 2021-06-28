@@ -18,14 +18,16 @@ function RenderDatePicker(props) {
 		console.log('date', date);
 		console.log('abc', IsBeforeNow(date));
 		// const date
-		if (IsBeforeNow(date)) {
-			isErrorDate(true);
-			return;
-		} else {
-			isErrorDate(false);
-			onChange(date);
-			setStartDate(date);
-		}
+		// if (IsBeforeNow(date)) {
+		// 	isErrorDate(true);
+		// 	return;
+		// } else {
+		// 	isErrorDate(false);
+		// 	onChange(date);
+		// 	setStartDate(date);
+		// }
+		onChange(date);
+		setStartDate(date);
 	};
 	return (
 		<DatePicker
