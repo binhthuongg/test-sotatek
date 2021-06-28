@@ -1,31 +1,36 @@
-import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Field, Form } from 'react-final-form';
-import { Link } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
-import RenderDatePicker from '../RenderDatePicker';
 import * as CONSTANTS_LOCAL_STORAGE from '../../constants/localStorage';
-import { StyledComponent } from './styles';
 import TaskSingleForm from '../TaskSingleForm';
+import { StyledComponent } from './styles';
 
 function TaskSingleWrapper(props) {
 	console.log('props', props);
-	const { task, isOpenDetail } = props;
+	const { task } = props;
 	const [isShowTaskDetail, setIsShowTaskDetail] = useState(false);
+	const [taskIdOpened, setTaskIdOpened] = useState(null);
+	const [reRender, setReRender] = useState(0);
 	const handleShowTaskId = (id) => {
-		console.log(id);
-		isOpenDetail(task.id);
 		localStorage.setItem(CONSTANTS_LOCAL_STORAGE.TASK_ID_SHOWED, id);
-		if (task.id === id) {
-			setIsShowTaskDetail(true);
-		} else {
-			setIsShowTaskDetail(false);
-		}
+		setTaskIdOpened(id);
+		setReRender(reRender + 1);
 	};
 	const handleRemoveTaskId = (id) => {
 		console.log(id);
 	};
+	useEffect(() => {
+		const taskIdOpened2 =
+			localStorage.getItem(CONSTANTS_LOCAL_STORAGE.TASK_ID_SHOWED) || '';
+		console.log('taskIdOpened', taskIdOpened);
+		console.log('task.id', task.id);
+		if (task.id === taskIdOpened2) {
+			setIsShowTaskDetail(true);
+		} else {
+			setIsShowTaskDetail(false);
+		}
+		return () =>
+			localStorage.removeItem(CONSTANTS_LOCAL_STORAGE.TASK_ID_SHOWED);
+	}, [task.id, taskIdOpened, reRender]);
 	return (
 		<StyledComponent>
 			<div className='taskHeader'>

@@ -2,10 +2,9 @@ import dayjs from 'dayjs';
 import React from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Field, Form } from 'react-final-form';
-import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import RenderDatePicker from '../RenderDatePicker';
 import * as CONSTANTS_LOCAL_STORAGE from '../../constants/localStorage';
+import RenderDatePicker from '../RenderDatePicker';
 import { StyledComponent } from './styles';
 
 function TaskSingleForm(props) {
@@ -142,7 +141,6 @@ function TaskSingleForm(props) {
 	return (
 		<StyledComponent>
 			<MyForm subscription={{ submitting: true, pristine: true }} />
-			<Link to='/task/list'>List task</Link>
 		</StyledComponent>
 	);
 }
