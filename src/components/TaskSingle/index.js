@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import React from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Field, Form } from 'react-final-form';
 import RenderDatePicker from '../RenderDatePicker';
@@ -13,17 +13,6 @@ function TaskSingle(props) {
 		high: 'high',
 	};
 
-	const [IsShowErrorPickTimeBeforeNow, setIsShowErrorPickTimeBeforeNow] =
-		useState(false);
-
-	const handleErrorDate = (isErrorDate) => {
-		if (isErrorDate) {
-			setIsShowErrorPickTimeBeforeNow(true);
-		} else {
-			setIsShowErrorPickTimeBeforeNow(false);
-		}
-	};
-
 	const IsBeforeNow = (dateString) => {
 		if (dayjs(dateString).isBefore(dayjs(), 'day')) {
 			return true;
@@ -31,9 +20,13 @@ function TaskSingle(props) {
 		return false;
 	};
 
-	const onSubmit = async (values) => {
-		setIsShowErrorPickTimeBeforeNow(false);
+	const onSubmit = (values, form) => {
 		console.log('values', values);
+		console.log('form', form);
+		alert('Tạo task thành công');
+		form.reset();
+		form.resetFieldState('username');
+		form.resetFieldState('dueTime');
 	};
 
 	const initialFormValue = {
@@ -55,14 +48,13 @@ function TaskSingle(props) {
 					errors.username = 'Required';
 				}
 				if (IsBeforeNow(dayjs(values.dueTime))) {
-					console.log('111');
 					errors.dueTime = textError;
 				}
 				console.log('errors', errors);
 				return errors;
 			}}
 			render={({ handleSubmit, form, submitting, pristine, values }) => (
-				<form onSubmit={handleSubmit}>
+				<form onSubmit={(event, form) => handleSubmit(event, form)}>
 					<Field name='username'>
 						{({ input, meta }) => (
 							<div>
@@ -101,17 +93,10 @@ function TaskSingle(props) {
 									return (
 										<div>
 											<label>due Time</label>
-											<RenderDatePicker
-												isErrorDate={handleErrorDate}
-												{...input}
-											/>
+											<RenderDatePicker {...input} />
 											{meta.error && meta.touched && (
 												<span>{meta.error}</span>
 											)}
-											{/* {!meta.active &&
-												IsShowErrorPickTimeBeforeNow && (
-													<span>{textError}</span>
-												)} */}
 										</div>
 									);
 								}}
