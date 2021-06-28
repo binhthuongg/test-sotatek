@@ -2,10 +2,13 @@ import dayjs from 'dayjs';
 import React from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Field, Form } from 'react-final-form';
+import { Link } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
 import RenderDatePicker from '../RenderDatePicker';
+import * as CONSTANTS_LOCAL_STORAGE from '../../constants/localStorage';
 import { StyledComponent } from './styles';
 
-function TaskSingle(props) {
+function TaskSingleForm(props) {
 	const textError = 'Thời gian không được trước ngày hôm nay';
 	const listPriority = {
 		low: 'low',
@@ -20,18 +23,29 @@ function TaskSingle(props) {
 		return false;
 	};
 
+	const listTask = localStorage.getItem(CONSTANTS_LOCAL_STORAGE.LIST_TASK)
+		? JSON.parse(localStorage.getItem(CONSTANTS_LOCAL_STORAGE.LIST_TASK))
+		: [];
+
 	const onSubmit = (values, form) => {
 		console.log('values', values);
 		console.log('form', form);
 		alert('Tạo task thành công');
 		form.reset();
-		form.resetFieldState('username');
+		form.resetFieldState('taskTitle');
 		form.resetFieldState('dueTime');
+		const newTask = { id: uuidv4(), ...values };
+		listTask.push(newTask);
+		localStorage.setItem(
+			CONSTANTS_LOCAL_STORAGE.LIST_TASK,
+			JSON.stringify(listTask)
+		);
+		console.log(listTask);
 	};
 
-	const initialFormValue = {
-		username: '',
-		description: '',
+	const initialFormValues = {
+		taskTitle: '',
+		taskDescription: '',
 		dueTime: dayjs().format('DD/MM/YYYY'),
 		priority: listPriority.normal,
 	};
@@ -40,12 +54,12 @@ function TaskSingle(props) {
 		<Form
 			onSubmit={onSubmit}
 			subscription={subscription}
-			initialValues={initialFormValue}
+			initialValues={initialFormValues}
 			validate={(values) => {
 				console.log('values', values);
 				const errors = {};
-				if (!values.username) {
-					errors.username = 'Required';
+				if (!values.taskTitle) {
+					errors.taskTitle = 'Required';
 				}
 				if (IsBeforeNow(dayjs(values.dueTime))) {
 					errors.dueTime = textError;
@@ -55,7 +69,7 @@ function TaskSingle(props) {
 			}}
 			render={({ handleSubmit, form, submitting, pristine, values }) => (
 				<form onSubmit={(event, form) => handleSubmit(event, form)}>
-					<Field name='username'>
+					<Field name='taskTitle'>
 						{({ input, meta }) => (
 							<div>
 								<label>Title</label>
@@ -70,10 +84,10 @@ function TaskSingle(props) {
 							</div>
 						)}
 					</Field>
-					<Field name='description'>
+					<Field name='taskDescription'>
 						{({ input, meta }) => (
 							<div>
-								<label>Description</label>
+								<label>taskDescription</label>
 								<textarea
 									{...input}
 									type='textarea'
@@ -128,8 +142,9 @@ function TaskSingle(props) {
 	return (
 		<StyledComponent>
 			<MyForm subscription={{ submitting: true, pristine: true }} />
+			<Link to='/task/list'>List task</Link>
 		</StyledComponent>
 	);
 }
 
-export default TaskSingle;
+export default TaskSingleForm;
