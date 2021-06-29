@@ -4,9 +4,13 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Field, Form } from 'react-final-form';
 import { v4 as uuidv4 } from 'uuid';
 import * as CONSTANTS_LOCAL_STORAGE from '../../constants/localStorage';
+import * as CONSTANTS_TASK from '../../constants/task';
 import RenderDatePicker from '../RenderDatePicker';
 import { StyledComponent } from './styles';
 
+/**
+ * params: formAction: edit is edit, else is add
+ */
 function TaskSingleForm(props) {
 	const textError = 'Thời gian không được trước ngày hôm nay';
 	const listPriority = {
@@ -14,6 +18,8 @@ function TaskSingleForm(props) {
 		normal: 'normal',
 		high: 'high',
 	};
+
+	const { formAction, task, edit } = props;
 
 	const IsBeforeNow = (dateString) => {
 		if (dayjs(dateString).isBefore(dayjs(), 'day')) {
@@ -26,28 +32,53 @@ function TaskSingleForm(props) {
 		? JSON.parse(localStorage.getItem(CONSTANTS_LOCAL_STORAGE.LIST_TASK))
 		: [];
 
-	const onSubmit = (values, form) => {
-		console.log('values', values);
-		console.log('form', form);
-		alert('Tạo task thành công');
-		form.reset();
-		form.resetFieldState('taskTitle');
-		form.resetFieldState('dueTime');
-		const newTask = { id: uuidv4(), ...values };
+	const handleAddNewTask = (newTask) => {
 		listTask.push(newTask);
 		localStorage.setItem(
 			CONSTANTS_LOCAL_STORAGE.LIST_TASK,
 			JSON.stringify(listTask)
 		);
-		console.log(listTask);
+	};
+	const handleEditTask = (taskUpdated) => {
+		const taskUpdatedIndex = listTask.findIndex((singleTask) => {
+			return singleTask.id === taskUpdated.id;
+		});
+		const cloneListTask = [...listTask];
+		cloneListTask[taskUpdatedIndex] = taskUpdated;
+		localStorage.setItem(
+			CONSTANTS_LOCAL_STORAGE.LIST_TASK,
+			JSON.stringify(cloneListTask)
+		);
+		edit(taskUpdated);
+	};
+	const onSubmit = (values, form) => {
+		if (formAction !== CONSTANTS_TASK.IS_EDIT_TASK) {
+			alert('Tạo task thành công');
+			form.reset();
+			form.resetFieldState('taskTitle');
+			form.resetFieldState('dueTime');
+			const newTask = { id: uuidv4(), ...values };
+			handleAddNewTask(newTask);
+		} else {
+			const taskUpdated = { id: task.id, ...values };
+			handleEditTask(taskUpdated);
+		}
 	};
 
-	const initialFormValues = {
-		taskTitle: '',
-		taskDescription: '',
-		dueTime: dayjs().format('DD/MM/YYYY'),
-		priority: listPriority.normal,
-	};
+	const initialFormValues =
+		formAction === CONSTANTS_TASK.IS_EDIT_TASK
+			? {
+					taskTitle: task.taskTitle,
+					taskDescription: task.taskDescription,
+					dueTime: task.dueTime,
+					priority: task.priority,
+			  }
+			: {
+					taskTitle: '',
+					taskDescription: '',
+					dueTime: dayjs().format('DD/MM/YYYY'),
+					priority: listPriority.normal,
+			  };
 
 	const MyForm = ({ subscription }) => (
 		<Form
@@ -131,7 +162,11 @@ function TaskSingleForm(props) {
 						</div>
 					</div>
 					<div className='buttons'>
-						<button type='submit'>Submit</button>
+						<button type='submit'>
+							{formAction === CONSTANTS_TASK.IS_EDIT_TASK
+								? 'Cập nhật'
+								: 'Tạo mới'}
+						</button>
 					</div>
 				</form>
 			)}

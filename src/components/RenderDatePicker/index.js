@@ -2,12 +2,20 @@ import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { withRouter } from 'react-router-dom';
 
 function RenderDatePicker(props) {
 	console.log('props', props);
 	console.log('props222');
-	const [startDate, setStartDate] = useState(new Date());
+	const isEdit = props.history.location.pathname === '/task/list';
 	const { value, name, input, onChange, isErrorDate } = props;
+	const [startDate, setStartDate] = useState(
+		isEdit ? dayjs(value).toDate() : new Date()
+		// isEdit ? new Date() : new Date()
+	);
+	console.log('value', value);
+	console.log('startDate', startDate);
+	console.log('dayjs(value).format', dayjs(value).toDate());
 	const IsBeforeNow = (dateString) => {
 		if (dayjs(dateString).isBefore(dayjs(), 'day')) {
 			return true;
@@ -26,7 +34,7 @@ function RenderDatePicker(props) {
 		// 	onChange(date);
 		// 	setStartDate(date);
 		// }
-		onChange(date);
+		onChange(dayjs(date).toDate());
 		setStartDate(date);
 	};
 	return (
@@ -43,4 +51,4 @@ function RenderDatePicker(props) {
 	);
 }
 
-export default RenderDatePicker;
+export default withRouter(RenderDatePicker);
