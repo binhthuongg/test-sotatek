@@ -150,9 +150,9 @@ function TaskList(props) {
 		<StyledComponent>
 			<h2 className='pageTitle'>To do list</h2>
 			{mainRender()}
-			<div className='mt-5 text-center'>
+			<div className='mt-50 text-center'>
 				<Link to='/task/add'>
-					<button>Add Task</button>
+					<button>New Task</button>
 				</Link>
 			</div>
 		</StyledComponent>

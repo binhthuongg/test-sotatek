@@ -8,9 +8,9 @@ function TaskAdd(props) {
 		<StyledComponent>
 			<h2 className='pageTitle'>New Task</h2>
 			<TaskSingleForm />
-			<div className='mt-5 text-center'>
+			<div className='mt-50 text-center'>
 				<Link to='/task/list'>
-					<button type='button'>New Task</button>
+					<button type='button'>To do List</button>
 				</Link>
 			</div>
 		</StyledComponent>
