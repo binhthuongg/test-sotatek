@@ -12,7 +12,7 @@ import { StyledComponent } from './styles';
  * params: formAction: edit is edit, else is add
  */
 function TaskSingleForm(props) {
-	const textError = 'Thời gian không được trước ngày hôm nay';
+	const textError = '*Thời gian không được trước ngày hôm nay !';
 	const listPriority = {
 		low: 'low',
 		normal: 'normal',
@@ -53,15 +53,16 @@ function TaskSingleForm(props) {
 	};
 	const onSubmit = (values, form) => {
 		if (formAction !== CONSTANTS_TASK.IS_EDIT_TASK) {
-			alert('Tạo task thành công');
 			form.reset();
 			form.resetFieldState('taskTitle');
-			form.resetFieldState('dueTime');
+			form.resetFieldState('dueDate');
 			const newTask = { id: uuidv4(), ...values };
 			handleAddNewTask(newTask);
+			alert('Tạo task thành công');
 		} else {
 			const taskUpdated = { id: task.id, ...values };
 			handleEditTask(taskUpdated);
+			alert('Cập nhật task thành công');
 		}
 	};
 
@@ -70,13 +71,13 @@ function TaskSingleForm(props) {
 			? {
 					taskTitle: task.taskTitle,
 					taskDescription: task.taskDescription,
-					dueTime: task.dueTime,
+					dueDate: task.dueDate,
 					priority: task.priority,
 			  }
 			: {
 					taskTitle: '',
 					taskDescription: '',
-					dueTime: dayjs().format('DD/MM/YYYY'),
+					dueDate: dayjs().toDate(),
 					priority: listPriority.normal,
 			  };
 
@@ -86,83 +87,90 @@ function TaskSingleForm(props) {
 			subscription={subscription}
 			initialValues={initialFormValues}
 			validate={(values) => {
-				console.log('values', values);
 				const errors = {};
 				if (!values.taskTitle) {
-					errors.taskTitle = 'Required';
+					errors.taskTitle = '*Required !';
 				}
-				if (IsBeforeNow(dayjs(values.dueTime))) {
-					errors.dueTime = textError;
+				if (IsBeforeNow(dayjs(values.dueDate))) {
+					errors.dueDate = textError;
 				}
-				console.log('errors', errors);
 				return errors;
 			}}
 			render={({ handleSubmit, form, submitting, pristine, values }) => (
 				<form onSubmit={(event, form) => handleSubmit(event, form)}>
 					<Field name='taskTitle'>
 						{({ input, meta }) => (
-							<div>
-								<label>Title</label>
+							<div className='formElement'>
 								<input
 									{...input}
 									type='text'
 									placeholder='Add new task'
 								/>
 								{!meta.active && meta.error && meta.touched && (
-									<span>{meta.error}</span>
+									<div className='errorText'>
+										{meta.error}
+									</div>
 								)}
 							</div>
 						)}
 					</Field>
 					<Field name='taskDescription'>
 						{({ input, meta }) => (
-							<div>
-								<label>taskDescription</label>
+							<div className='formElement'>
+								<label>Description</label>
 								<textarea
 									{...input}
 									type='textarea'
 									rows='10'
 								/>
 								{!meta.active && meta.error && meta.touched && (
-									<span>{meta.error}</span>
+									<div className='errorText'>
+										{meta.error}
+									</div>
 								)}
 							</div>
 						)}
 					</Field>
-					<div className='row'>
-						<div className='col-sm-6'>
-							<Field name='dueTime'>
-								{({ input, meta }) => {
-									console.log(meta);
-									return (
-										<div>
-											<label>due Time</label>
-											<RenderDatePicker {...input} />
-											{meta.error && meta.touched && (
-												<span>{meta.error}</span>
-											)}
-										</div>
-									);
-								}}
-							</Field>
-						</div>
-						<div className='col-sm-6'>
-							<Field name='priority' component='select'>
-								<option value={listPriority.low}>
-									{' '}
-									{listPriority.low}
-								</option>
-								<option value={listPriority.normal}>
-									{listPriority.normal}
-								</option>
-								<option value={listPriority.high}>
-									{listPriority.high}
-								</option>
-							</Field>
-						</div>
+					<div className='formGroup'>
+						<Field name='dueDate'>
+							{({ input, meta }) => {
+								return (
+									<div className='formElement'>
+										<label>Due Date</label>
+										<RenderDatePicker {...input} />
+										{/* no need touched, active */}
+										{meta.error && (
+											<div className='errorText'>
+												{meta.error}
+											</div>
+										)}
+									</div>
+								);
+							}}
+						</Field>
+						<Field name='priority'>
+							{({ input, meta }) => {
+								return (
+									<div className='formElement'>
+										<label>Priority</label>
+										<select {...input}>
+											<option value={listPriority.low}>
+												{listPriority.low}
+											</option>
+											<option value={listPriority.normal}>
+												{listPriority.normal}
+											</option>
+											<option value={listPriority.high}>
+												{listPriority.high}
+											</option>
+										</select>
+									</div>
+								);
+							}}
+						</Field>
 					</div>
 					<div className='buttons'>
-						<button type='submit'>
+						<button type='submit' className='block btn-green'>
 							{formAction === CONSTANTS_TASK.IS_EDIT_TASK
 								? 'Cập nhật'
 								: 'Tạo mới'}
