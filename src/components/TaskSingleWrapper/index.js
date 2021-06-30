@@ -27,7 +27,6 @@ function TaskSingleWrapper(props) {
 	};
 	useEffect(() => {
 		if (props.searchText) {
-			// checkBoxRef.current.checked = false;
 			setIsChecked(false);
 		}
 	}, [props.searchText]);
@@ -45,7 +44,7 @@ function TaskSingleWrapper(props) {
 				<div className='buttonGroups'>
 					<button
 						type='button'
-						className='btn-green'
+						className='btn-blue'
 						onClick={() => toggleShowTaskId()}
 					>
 						{isShowTaskDetail ? 'Hide Detail' : 'Detail'}

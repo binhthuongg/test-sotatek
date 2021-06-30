@@ -68,6 +68,13 @@ button.block {
 .btn-red:hover {
 	background: #d9534f;
 }
+.btn-blue {
+	background: #2196f3;
+	color: white;
+}
+.btn-blue:hover {
+	background: #2196f3;
+}
 .formGroup {
 	display: flex;
 	justify-content: space-between;
