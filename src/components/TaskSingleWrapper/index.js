@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import * as CONSTANTS_TASK from '../../constants/task';
 import TaskSingleForm from '../TaskSingleForm';
@@ -11,7 +11,6 @@ function TaskSingleWrapper(props) {
 	const toggleShowTaskId = () => {
 		setIsShowTaskDetail(!isShowTaskDetail);
 	};
-	const checkBoxRef = useRef(false);
 	const onEdit = (newTask) => {
 		setTask(newTask);
 	};
@@ -28,7 +27,7 @@ function TaskSingleWrapper(props) {
 	};
 	useEffect(() => {
 		if (props.searchText) {
-			checkBoxRef.current.checked = false;
+			// checkBoxRef.current.checked = false;
 			setIsChecked(false);
 		}
 	}, [props.searchText]);
@@ -38,7 +37,6 @@ function TaskSingleWrapper(props) {
 				<div className='titleWrapper'>
 					<input
 						type='checkbox'
-						ref={checkBoxRef}
 						checked={isChecked}
 						onChange={(e) => handleCheck(e, task.id)}
 					/>

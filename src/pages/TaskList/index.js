@@ -82,6 +82,7 @@ function TaskList(props) {
 			JSON.stringify(leftTasks)
 		);
 		setListTask([...leftTasks]);
+		setListTaskIdChecked([]);
 	};
 
 	const renderAction = () => {
@@ -94,6 +95,7 @@ function TaskList(props) {
 						<button type='button'>Done</button>
 						<button
 							type='button'
+							className='btn-red'
 							onClick={() => handleRemoveTasks()}
 						>
 							Remove
