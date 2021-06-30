@@ -10,6 +10,9 @@ export const StyledComponent = styled.div`
 		align-items: center;
 		padding: 15px;
 		border: 1px solid #ccc;
+		@media screen and (max-width: 639px) {
+			display: block;
+		}
 	}
 	.taskHeader,
 	form {
@@ -30,6 +33,9 @@ export const StyledComponent = styled.div`
 	.titleWrapper {
 		display: flex;
 		align-items: center;
+		@media screen and (max-width: 639px) {
+			margin-bottom: 20px;
+		}
 	}
 	input[type='checkbox'] {
 		/* position: relative; */

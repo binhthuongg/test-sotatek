@@ -79,8 +79,18 @@ button.block {
 	display: flex;
 	justify-content: space-between;
 }
+@media screen and (max-width: 639px) {
+	.formGroup {
+		display: block;
+	}
+}
 .formGroup .formElement {
 	width: 49%;
+}
+@media screen and (max-width: 639px) {
+	.formGroup .formElement {
+		width: 100%;
+	}
 }
 .formElement {
 	margin-bottom: 30px;
