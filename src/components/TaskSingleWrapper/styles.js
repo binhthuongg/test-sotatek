@@ -32,8 +32,8 @@ export const StyledComponent = styled.div`
 		align-items: center;
 	}
 	input[type='checkbox'] {
-		position: relative;
-		top: 3px;
+		/* position: relative; */
+		/* top: 3px; */
 	}
 	.taskTitle {
 		margin: 0;

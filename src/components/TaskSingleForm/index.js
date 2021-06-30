@@ -172,8 +172,8 @@ function TaskSingleForm(props) {
 					<div className='buttons'>
 						<button type='submit' className='block btn-green'>
 							{formAction === CONSTANTS_TASK.IS_EDIT_TASK
-								? 'Cập nhật'
-								: 'Tạo mới'}
+								? 'Update'
+								: 'Add'}
 						</button>
 					</div>
 				</form>
