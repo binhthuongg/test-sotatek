@@ -6,7 +6,7 @@ import { StyledComponent } from './styles';
 function TaskAdd(props) {
 	return (
 		<StyledComponent>
-			<h3 className='pageTitle'>New Task</h3>
+			<h2 className='pageTitle'>New Task</h2>
 			<TaskSingleForm />
 			<div className='mt-5 text-center'>
 				<Link to='/task/list'>
