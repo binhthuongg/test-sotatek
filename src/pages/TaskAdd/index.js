@@ -10,7 +10,7 @@ function TaskAdd(props) {
 			<TaskSingleForm />
 			<div className='mt-5 text-center'>
 				<Link to='/task/list'>
-					<button type='button'>List task</button>
+					<button type='button'>New Task</button>
 				</Link>
 			</div>
 		</StyledComponent>

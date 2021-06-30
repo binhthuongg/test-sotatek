@@ -95,7 +95,7 @@ function TaskList(props) {
 		if (listTaskIdChecked && listTaskIdChecked.length > 0) {
 			html = (
 				<div className='buildAction'>
-					<h4 className='title'>Build action</h4>
+					<h4 className='title'>Build Action:</h4>
 					<div className='actions'>
 						<button type='button'>Done</button>
 						<button
@@ -148,7 +148,7 @@ function TaskList(props) {
 	};
 	return (
 		<StyledComponent>
-			<h2 className='pageTitle'>List Tasks</h2>
+			<h2 className='pageTitle'>To do list</h2>
 			{mainRender()}
 			<div className='mt-5 text-center'>
 				<Link to='/task/add'>
