@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import TaskSingleWrapper from '../../components/TaskSingleWrapper';
@@ -6,13 +7,17 @@ import * as CONSTANTS_TASK from '../../constants/task';
 import { StyledComponent } from './styles';
 
 function TaskList(props) {
-	let listTaskFromStorage = localStorage.getItem(
+	const listTaskFromStorage = localStorage.getItem(
 		CONSTANTS_LOCAL_STORAGE.LIST_TASK
 	)
 		? JSON.parse(localStorage.getItem(CONSTANTS_LOCAL_STORAGE.LIST_TASK))
 		: [];
 
-	const [listTask, setListTask] = useState(listTaskFromStorage);
+	const listTaskFromStorageFilter = listTaskFromStorage.sort((a, b) =>
+		dayjs(a.dueDate).isAfter(dayjs(b.dueDate)) ? -1 : 1
+	);
+
+	const [listTask, setListTask] = useState(listTaskFromStorageFilter);
 	const [searchText, setSearchText] = useState('');
 	const [listTaskIdChecked, setListTaskIdChecked] = useState([]);
 
