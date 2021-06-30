@@ -29,6 +29,12 @@ input,
 textarea {
 	padding: 15px 20px;
 }
+input,
+textarea,
+select {
+	padding: 15px 20px;
+	font-size: 1em;
+}
 
 button {
 	padding: 15px 15px;
