@@ -58,11 +58,11 @@ function TaskSingleForm(props) {
 			form.resetFieldState('dueDate');
 			const newTask = { id: uuidv4(), ...values };
 			handleAddNewTask(newTask);
-			alert('Tạo task thành công');
+			alert('Tạo task thành công !');
 		} else {
 			const taskUpdated = { id: task.id, ...values };
 			handleEditTask(taskUpdated);
-			alert('Cập nhật task thành công');
+			alert('Cập nhật task thành công !');
 		}
 	};
 

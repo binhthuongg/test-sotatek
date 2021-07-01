@@ -6,10 +6,10 @@ function Home(props) {
 	return (
 		<StyledComponent>
 			<Link to='task/add'>
-				<button>Add Task</button>
+				<button>New Task</button>
 			</Link>
 			<Link to='task/list'>
-				<button className='btn-green'>List Task</button>
+				<button className='btn-green'>To do List</button>
 			</Link>
 		</StyledComponent>
 	);

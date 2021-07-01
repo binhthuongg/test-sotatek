@@ -36,7 +36,7 @@ function TaskList(props) {
 		setListTaskIdChecked([...cloneListTaskIdChecked]);
 	};
 	const onRemoveSingleTask = (taskId) => {
-		const deleteConfirm = window.confirm(`Bạn có chắc chắn muốn xóa `);
+		const deleteConfirm = window.confirm(`Bạn có chắc chắn muốn xóa ?`);
 		if (!deleteConfirm) return;
 		const taskIdIndex = listTask.findIndex((singleTask) => {
 			return singleTask.id === taskId;
@@ -49,6 +49,7 @@ function TaskList(props) {
 				CONSTANTS_LOCAL_STORAGE.LIST_TASK,
 				JSON.stringify(cloneTask)
 			);
+			alert('Xóa task thành công !');
 		}
 	};
 
@@ -75,7 +76,7 @@ function TaskList(props) {
 
 	const handleRemoveTasks = () => {
 		const deleteConfirm = window.confirm(
-			`Bạn có chắc chắn muốn xóa các task được chọn `
+			`Bạn có chắc chắn muốn xóa các task được chọn ?`
 		);
 		if (!deleteConfirm) return;
 
@@ -88,6 +89,7 @@ function TaskList(props) {
 		);
 		setListTask([...leftTasks]);
 		setListTaskIdChecked([]);
+		alert('Xóa task thành công !');
 	};
 
 	const renderAction = () => {
@@ -112,15 +114,18 @@ function TaskList(props) {
 		return html;
 	};
 
+	/**
+	 * filter
+	 * when search, uncheck all
+	 */
 	const handleChangeSearch = (e) => {
 		setListTaskIdChecked([]);
 		setSearchText(e.target.value);
 		const searchResult = listTaskFromStorage.filter((singleTask) => {
 			return (
 				singleTask.taskTitle
-					.trim()
 					.toLowerCase()
-					.indexOf(e.target.value) > -1
+					.indexOf(e.target.value.toLowerCase()) > -1
 			);
 		});
 		setListTask(searchResult);
@@ -133,6 +138,7 @@ function TaskList(props) {
 					<input
 						type='text'
 						value={searchText}
+						placeholder='Search'
 						onChange={(e) => handleChangeSearch(e)}
 					/>
 					{renderListTask()}
@@ -140,15 +146,11 @@ function TaskList(props) {
 				</>
 			);
 		}
-		return (
-			<>
-				<p>Không có task nào</p>
-			</>
-		);
+		return <p>Không có task nào</p>;
 	};
 	return (
 		<StyledComponent>
-			<h2 className='pageTitle'>To do list</h2>
+			<h2 className='pageTitle'>To do List</h2>
 			{mainRender()}
 			<div className='mt-50 text-center'>
 				<Link to='/task/add'>
